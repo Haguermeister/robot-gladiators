@@ -48,7 +48,8 @@ var fight =  function(enemyname) {
 var startgame = function(){
     playerhealth = 100;
     playerattack = 10;
-     playermoney = 10;
+    playermoney = 10;
+    deadbodies = 0;
 
     for (i=0; i<enemynames.length; i++){
         if(playerhealth > 0){
@@ -61,12 +62,18 @@ var startgame = function(){
         pickedenemyname = enemynames[i];
         enemyhealth=50;
         fight(pickedenemyname);
+        if(playerhealth > 0 && i < enemynames.length - 1){
+            var confirmshop = window.confirm("Would you like to enter the shop?")
+            if(confirmshop){
+                shop();
+            }
+        }
     }
     thanos();
 }
 
 var thanos = function(){
-    if(deadbodies === 5){
+    if(deadbodies === 3){
         window.alert("You win! Opponents defeated = " + deadbodies + " Score = " + playermoney);
     }
     else{
@@ -81,16 +88,42 @@ var thanos = function(){
     }
 }
 var shop = function(){
-    var shopanswer = window.prompt("Would you like to REFILL your health, UPGRADE your attack, or LEAVE the shop? Please enter REFILL ? UPGRADE ? LEAVE to make a choice.");
-    /*if(shopanswer === "REFILL" || "refill"){
-
+    window.alert("Your bag is full of "+ playermoney + " coins.");
+    var shopanswer = window.prompt("Would you like to REFILL 20 healthfor 7 coins, UPGRADE 6 attackfor 7 coins, or LEAVE the shop? Please enter REFILL / UPGRADE / LEAVE to make a choice.");
+    switch(shopanswer){
+        
+        case "REFILL" : 
+        case "refill" :
+            if(playermoney >= 7){
+                playerhealth = playerhealth + 20;
+                playermoney = playermoney - 7;
+                window.alert("REFILLED 20 Health. Your health is now: "+ playerhealth);
+            }
+            else{
+                window.alert("Not a valid option, you too broke");
+                shop();
+            }
+            break;
+        case "upgrade" :
+        case "UPGRADE" :
+            if(playermoney >= 7){
+                playerattack = playerattack + 6;
+                playermoney = playermoney - 7;
+                window.alert("Upgraded 6 attack. Your attack is now: "+ playerattack);
+            }
+            else{
+                window.alert("Not a valid option, you too broke");
+                shop(); 
+            }
+            break;
+        case "LEAVE" :
+        case "leave" :
+            window.alert("BYE BYE NOW, thank you come again!");
+            break;
+        default:
+            window.alert("Not a valid option");
+            shop();
+            break;
     }
-    else if((shopanswer === "UPGRADE" || "upgrade") && playermoney >= 5){
-        playerattack = playerattack + 5;
-        playermoney = playermoney - 5;
-    }
-    else{
-        break;
-    }*/
 }
 startgame();
